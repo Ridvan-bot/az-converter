@@ -1,17 +1,22 @@
 {
   "name": "az-converter",
   "version": "1.0.0",
-  "description": "Using Azure Functions + Event Grid + Blob Storage to convert files",
-  "main": "index.js",
+  "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "@azure/functions": "^4.0.0"
+  },
   "devDependencies": {
-    "@types/node": "^22.10.7",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
-  }
+    "@types/node": "^20.x",
+    "typescript": "^4.0.0",
+    "rimraf": "^5.0.0"
+  },
+  "main": "dist/src/{index.js,functions/*.js}"
 }
