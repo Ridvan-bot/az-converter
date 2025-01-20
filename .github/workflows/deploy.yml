@@ -1,0 +1,49 @@
+name: Deploy AZ-Converter in Azure
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+#   execute-code-quality-validation:
+#     uses: ./.github/workflows/validate.yml
+#     with:
+#       branches: "dev"
+#       eslint-enable: true
+#       unit-test-enable: false
+#     secrets:
+#       token: ${{ secrets.GH_TOKEN }}
+#       database_url: ${{ secrets.DATABASE_URL }}
+
+  execute-release:
+    # needs: execute-code-quality-validation
+    uses: ./.github/workflows/release.yml
+    with:
+      branches: "${{ github.ref_name }}"
+      slack_enabled: true
+    secrets:
+      token: ${{ secrets.GH_TOKEN }}
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
+  deploy:
+     needs: execute-release
+     runs-on: ubuntu-22.04
+     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+     steps:
+       - name: Checkout code
+         uses: actions/checkout@v4
+         with:
+           fetch-depth: 0 
+
+       - name: Set Branch Name
+         id: branch_name
+         run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+       - name: Set Latest Tag
+         id: set_latest_tag
+         run: |
+           LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v1.0.0")
+           echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
+           echo "Latest tag is ${{ env.LATEST_TAG }}"
+
