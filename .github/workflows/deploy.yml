@@ -36,10 +36,9 @@ jobs:
            LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v1.0.0")
            echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
            echo "Latest tag is ${{ env.LATEST_TAG }}"
-
-    
+  
        - name: Deploy to Azure
-         uses: azure/functions-action
+         uses: azure/functions-action@v1.5.1
          with:
             app-name: 'pohlmanproteanfuncapp'
-            
+
