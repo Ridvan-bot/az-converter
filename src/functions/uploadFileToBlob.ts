@@ -6,6 +6,11 @@ dotenv.config();
 
 const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
 
+
+if (!AZURE_STORAGE_CONNECTION_STRING) {
+    throw new Error("Azure Storage Connection string not found");
+}
+
 export async function uploadFileToBlob(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
 
     console.log(`
