@@ -13,12 +13,19 @@
   "dependencies": {
     "@azure/functions": "^4.6.0",
     "@azure/storage-blob": "^12.26.0",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
     "dotenv": "^16.4.7",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/node": "^20.x",
     "@types/xlsx": "^0.0.35",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/npm": "^12.0.1",
+    "semantic-release": "^24.2.0",
     "rimraf": "^5.0.0",
     "typescript": "^4.0.0"
   },
