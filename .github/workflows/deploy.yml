@@ -7,16 +7,6 @@ on:
       - main
 
 jobs:
-#   execute-code-quality-validation:
-#     uses: ./.github/workflows/validate.yml
-#     with:
-#       branches: "dev"
-#       eslint-enable: true
-#       unit-test-enable: false
-#     secrets:
-#       token: ${{ secrets.GH_TOKEN }}
-#       database_url: ${{ secrets.DATABASE_URL }}
-
   execute-release:
     # needs: execute-code-quality-validation
     uses: ./.github/workflows/release.yml
@@ -47,3 +37,9 @@ jobs:
            echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
            echo "Latest tag is ${{ env.LATEST_TAG }}"
 
+    
+       - name: Deploy to Azure
+         uses: azure/functions-action
+         with:
+            app-name: 'pohlmanproteanfuncapp'
+            
