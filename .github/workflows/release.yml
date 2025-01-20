@@ -1,0 +1,40 @@
+name: Trigger Semantic Release
+
+on:
+  workflow_call:
+    inputs:
+      branches:
+        required: true
+        type: string
+        description: 'Branches to trigger the release'
+      slack_enabled:
+        required: false
+        type: boolean
+        default: false
+        description: 'Enable semantic release'
+    secrets:
+      token:
+        required: true
+        description: 'GitHub token'
+      slack_webhook:
+        required: false
+        description: 'Slack webhook URL'
+jobs:
+  # Early exit job to complete workflow if branches is not "main"
+  No-release:
+    if: ${{ inputs.branches != 'main' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: No release
+        run: echo "Branch is not main, no need to release."
+
+  # Execute semantic release only if branches is "main"
+  execute-semantic-release:
+    if: ${{ inputs.branches == 'main' }}
+    uses: Ridvan-bot/workflows/.github/workflows/semantic-release.yml@main
+    with:
+      branches: "${{ inputs.branches }}"
+      slack_enabled: "${{ inputs.slack_enabled }}"
+    secrets:
+      token: ${{ secrets.GH_TOKEN }}
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
