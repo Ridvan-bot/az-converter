@@ -11,18 +11,23 @@ const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STR
 const blobTrigger = async function (blob: Buffer): Promise<void> {
     try {
         console.log(`
-            
+
             ============================================================
             ||                                                       ||
-            ||       Blob trigger function processed blob            ||
+            ||                 Convert file in blob                  ||
             ||                                                       ||
             ============================================================
             `);
-        console.log('Blob trigger function processed blob');
-        let blobName = 'pohlmanTestExcel.xlsx';
+
     const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
     const containerClient = blobServiceClient.getContainerClient('convertfiles');
+    let blobs = containerClient.listBlobsFlat();
+    for await (const blob of blobs) {
+    console.log(`Blob: ${blob.name}`);
+    const blobName = blob.name as string;
+
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
 
     const blobExtension = path.extname(blobName).toLowerCase();
 
@@ -55,7 +60,7 @@ const blobTrigger = async function (blob: Buffer): Promise<void> {
             console.log(`Deleted original blob: ${blobName}`);
             // Delete the converted CSV blob
 
-
+    }
 } catch (error) {
     console.log(`Error processing blob: ${error.message}`);
 };

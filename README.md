@@ -19,7 +19,7 @@ AZ Converter is a tool for converting data between different formats.
 To install the AZ Converter, clone the repository and install the dependencies:
 
 ```bash
-git clone https://github.com/yourusername/az-converter.git
+git clone https://github.com/ridvan-bot/az-converter.git
 cd az-converter
 npm install
 ```
@@ -41,7 +41,7 @@ https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs
 
 1. **Clone the Repository**: Clone the repository to your local machine using the following command:
     ```bash
-    git clone https://github.com/yourusername/az-converter.git
+    git clone https://github.com/ridvan-bot/az-converter.git
     ```
 
 2. **Navigate to the Project Directory**: Change your working directory to the project directory

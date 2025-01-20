@@ -16,7 +16,7 @@ export async function uploadFileToBlob(request: HttpRequest, context: Invocation
         ||                                                       ||
         ===========================================================
         `);
-    context.log(`File upload function processed request for url "${request.url}"`);
+    console.log(`File upload function processed request for url "${request.url}"`);
 
     if (request.method === 'POST') {
         const formData = await request.formData();
@@ -29,24 +29,20 @@ export async function uploadFileToBlob(request: HttpRequest, context: Invocation
             }
             try {
                 const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
-                context.log('Blob service client created.');
                 const containerClient = blobServiceClient.getContainerClient('convertfiles');
-                context.log('Container client created.');
                 const blockBlobClient = containerClient.getBlockBlobClient(file.name);
-                context.log('Block blob client created.');
+               
                 const fileBuffer = Buffer.from(await file.arrayBuffer());
-                context.log('File buffer created.');
                 await blockBlobClient.uploadData(fileBuffer);
-                context.log('File uploaded to Azure Blob Storage.');
 
                 // List blobs in the container
                 let blobs = containerClient.listBlobsFlat();
                 for await (const blob of blobs) {
-                context.log(`Blob: ${blob.name}`);
+                console.log(`Blob: ${blob.name}`);
                 }
                 return { body: `File uploaded successfully to Azure Blob Storage!` };
             } catch (error) {
-                context.log(`Error creating BlobServiceClient: ${error.message}`);
+                console.log(`Error creating BlobServiceClient: ${error.message}`);
                 return { body: `Error creating BlobServiceClient: ${error.message}` };
             }
         } else {
