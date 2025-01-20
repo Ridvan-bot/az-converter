@@ -28,7 +28,7 @@ npm install
 To use the AZ Converter, run the following command:
 
 ```bash
-npm start
+npm run start
 ```
 
 Follow the on-screen instructions to convert your data.
@@ -56,7 +56,7 @@ https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs
 
 4. **Start the Application**: Start the application with the following command:
     ```bash
-    npm start
+    npm run start
     ```
 
 5. **Convert Data**: Follow the on-screen instructions to convert your data from format A to format B.
