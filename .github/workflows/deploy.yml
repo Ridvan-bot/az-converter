@@ -1,17 +1,36 @@
 name: Deploy Node.js project to Azure Function App
 
 on:
-  [push]
-
+  push:
+    branches:
+      - dev
+      - main
 env:
   AZURE_FUNCTIONAPP_NAME: 'pohlmanproteanfuncapp'  
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'       
   NODE_VERSION: '20.x'
 
 jobs:
+
+  execute-code-quality-validation:
+    uses: ./.github/workflows/validate.yml
+    with:
+      eslint-enable: true
+      unit-test-enable: true
+    secrets:
+      token: ${{ secrets.GH_TOKEN }}
+
+  execute-release:
+    needs: execute-code-quality-validation
+    uses: ./.github/workflows/release.yml
+    with:
+      branches: "${{ github.ref_name }}"
+      slack_enabled: true
+    secrets:
+      token: ${{ secrets.GH_TOKEN }}
+      slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
   build-and-deploy:
     runs-on: ubuntu-latest
-    # environment: dev
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v3
@@ -37,4 +56,5 @@ jobs:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
 
