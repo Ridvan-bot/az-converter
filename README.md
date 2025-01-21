@@ -65,10 +65,10 @@ https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs
 
 7. **Check Environment Variables**: To check and configure environment variables in your Azure Function App, follow these steps:
 <p>
-Go to the Azure Portal.
-Navigate to your Azure Function App.
-In the left-hand menu, under "Settings", click on "Environment variables".
-Here you can see and manage your environment variables under the "Application settings" tab.
+1. Go to the Azure Portal.
+2. Navigate to your Azure Function App.
+3. In the left-hand menu, under "Settings", click on "Environment variables".
+4. Here you can see and manage your environment variables under the "Application settings" tab.
 </p>
 
 ##
