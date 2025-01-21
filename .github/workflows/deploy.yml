@@ -1,24 +1,27 @@
-name: Deploy AZ-Converter in Azure
+name: Deploy Node.js project to Azure Function App
 
 on:
   push:
     branches:
       - dev
       - main
+env:
+  AZURE_FUNCTIONAPP_NAME: 'pohlmanproteanfuncapp'  
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'       
+  NODE_VERSION: '20.x'
 
 jobs:
-#   execute-code-quality-validation:
-#     uses: ./.github/workflows/validate.yml
-#     with:
-#       branches: "dev"
-#       eslint-enable: true
-#       unit-test-enable: false
-#     secrets:
-#       token: ${{ secrets.GH_TOKEN }}
-#       database_url: ${{ secrets.DATABASE_URL }}
+
+  execute-code-quality-validation:
+    uses: ./.github/workflows/validate.yml
+    with:
+      eslint-enable: true
+      unit-test-enable: true
+    secrets:
+      token: ${{ secrets.GH_TOKEN }}
 
   execute-release:
-    # needs: execute-code-quality-validation
+    needs: execute-code-quality-validation
     uses: ./.github/workflows/release.yml
     with:
       branches: "${{ github.ref_name }}"
@@ -26,24 +29,34 @@ jobs:
     secrets:
       token: ${{ secrets.GH_TOKEN }}
       slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
-  deploy:
-     needs: execute-release
-     runs-on: ubuntu-22.04
-     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
-     steps:
-       - name: Checkout code
-         uses: actions/checkout@v4
-         with:
-           fetch-depth: 0 
+  build-and-deploy:
+    needs: execute-release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v3
 
-       - name: Set Branch Name
-         id: branch_name
-         run: echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+    - name: Setup Node ${{ env.NODE_VERSION }} Environment
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
 
-       - name: Set Latest Tag
-         id: set_latest_tag
-         run: |
-           LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "v1.0.0")
-           echo "LATEST_TAG=${LATEST_TAG}" >> $GITHUB_ENV
-           echo "Latest tag is ${{ env.LATEST_TAG }}"
+    - name: 'Resolve Project Dependencies Using Npm'
+      shell: bash
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+        popd
+
+    - name: 'Run Azure Functions Action'
+      uses: Azure/functions-action@v1
+      id: fa
+      with:
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
+
 
