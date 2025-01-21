@@ -24,8 +24,10 @@ export async function uploadFileToBlob(request: HttpRequest, context: Invocation
     console.log(`File upload function processed request for url "${request.url}"`);
 
     if (request.method === 'POST') {
+
         const formData = await request.formData();
         const file = formData.get('file') as unknown as File;
+  
 
         if (file) {
             const allowedMimeTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/csv'];
