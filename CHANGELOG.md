@@ -1,3 +1,5 @@
+## [1.2.0](https://github.com/Ridvan-bot/az-converter/compare/v1.1.0...v1.2.0) (2025-01-21)
+
 ## [1.1.0](https://github.com/Ridvan-bot/az-converter/compare/v1.0.0...v1.1.0) (2025-01-21)
 
 ### Bug Fixes
