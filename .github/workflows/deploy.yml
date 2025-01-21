@@ -25,7 +25,7 @@ jobs:
     uses: ./.github/workflows/release.yml
     with:
       branches: "${{ github.ref_name }}"
-      slack_enabled: true
+      slack_enabled: false
     secrets:
       token: ${{ secrets.GH_TOKEN }}
       slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
