@@ -30,6 +30,7 @@ jobs:
       token: ${{ secrets.GH_TOKEN }}
       slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
   build-and-deploy:
+    needs: execute-code-quality-validation
     runs-on: ubuntu-latest
     steps:
     - name: 'Checkout GitHub Action'
