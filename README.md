@@ -63,12 +63,13 @@ https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs
 
 6. **Additional Resources**: For more detailed instructions on creating Azure Functions with TypeScript, refer to the [Microsoft documentation](https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-typescript?pivots=nodejs-model-v4).
 
-7. **Check Environment Variables**: To check and configure environment variables in your Azure Function App, follow these steps
+7. **Check Environment Variables**: To check and configure environment variables in your Azure Function App, follow these steps:
+<p>
 Go to the Azure Portal.
 Navigate to your Azure Function App.
 In the left-hand menu, under "Settings", click on "Environment variables".
 Here you can see and manage your environment variables under the "Application settings" tab.
-
+</p>
 
 ##
 <p align="center">
